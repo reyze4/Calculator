@@ -28,7 +28,7 @@ namespace Calculator
 
         private void BClear_Click(object sender, RoutedEventArgs e)
         {
-            TBAge.Text = TBHeight.Text = TBKg.Text = TBAnswer.Text = "";
+            TBAge.Text = TBHeight.Text = TBKg.Text = TBTDEE.Text = TBBMR.Text = string.Empty;
         }
 
         private void BCalculate_Click(object sender, RoutedEventArgs e)
@@ -39,19 +39,19 @@ namespace Calculator
 
             if (string.IsNullOrWhiteSpace(TBAge.Text) == true || TBAge.Text.EndsWith(",") == true)
             {
-                error += "Введите корректный возраст\n";
+                error += "-Введите корректный возраст\n";
             }
             if (string.IsNullOrWhiteSpace(TBKg.Text) == true ||TBKg.Text.EndsWith(",") == true)
             {
-                error += "Введите корректный вес\n";
+                error += "-Введите корректный вес\n";
             }
             if (string.IsNullOrWhiteSpace(TBHeight.Text) == true || TBHeight.Text.EndsWith(",") == true)
             {
-                error += "Введите корректный рост\n";
+                error += "-Введите корректный рост\n";
             }
             if (string.IsNullOrWhiteSpace(error) == false)
             {
-                MessageBox.Show(error);
+                MessageBox.Show(error, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -66,7 +66,8 @@ namespace Calculator
                 result= 655 + (9.6 * Convert.ToDouble(TBKg.Text)) + (1.8 * Convert.ToDouble(TBHeight.Text)) - (4.7 * Convert.ToInt32(TBAge.Text));
             }
             ratio = GetRatio() * result;
-            TBAnswer.Text = ratio.ToString();
+            TBBMR.Text = result.ToString();
+            TBTDEE.Text = ratio.ToString();
         }
 
         private void TBAge_PreviewTextInput(object sender, TextCompositionEventArgs e)

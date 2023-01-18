@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="450">
+        Title="Вычисление BMR и TDEE" Height="500" Width="450">
 
     <Window.Resources>
         <Style TargetType="TextBlock">
@@ -14,33 +14,49 @@
         <Style TargetType="TextBox" x:Key="textboxStyle">
             <Setter Property="Height" Value="25"/>
             <Setter Property="Width" Value="200"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="ComboBox">
             <Setter Property="Height" Value="25"/>
             <Setter Property="Width" Value="200"/>
+            <Setter Property="IsEditable" Value="True"/>
+            <Setter Property="IsReadOnly" Value="True"/>
         </Style>
         <Style TargetType="Button">
             <Setter Property="Height" Value="30"/>
             <Setter Property="Width" Value="100"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Margin" Value="10 0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4">
+                            <ContentPresenter 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
     
-    <Grid Background="#FFFFABAB">
-        <StackPanel Margin="20 10"
+    <Grid Background="#FFF3F3F3">
+        <StackPanel Margin="20 30"
                     HorizontalAlignment="Center">
             <TextBlock Text="Вычисление BMR и TDEE"
                        HorizontalAlignment="Center"
                        FontSize="20"
-                       Foreground="White"/>
+                       Foreground="Black"/>
 
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Margin="0 10">
                 <TextBlock Text="Пол"
                            Margin="0 0 10 0"/>
-                <ComboBox  x:Name="Gender" Width="200" SelectedIndex="0" >
+                <ComboBox x:Name="Gender" Width="200" SelectedIndex="0">
                     <ComboBoxItem Content="Мужской"/>
                     <ComboBoxItem Content="Женский"/>
                 </ComboBox>
@@ -89,14 +105,30 @@
                         HorizontalAlignment="Center">
                 <Button Content="Очистить"
                         x:Name="BClear"
-                        Click="BClear_Click" Background="#FFF40000"/>
+                        Click="BClear_Click" 
+                        Background="#FFD07B7B"/>
                 <Button Content="Вычислить"
                         x:Name="BCalculate"
-                        Click="BCalculate_Click" Background="#FFFF0202"/>
+                        Click="BCalculate_Click" 
+                        Background="#FF9DD07B"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBox FontSize="15" Background="Transparent" Margin="10 10 10 0">BMR: </TextBox>
-                <TextBlock Margin="10 10 10 0" x:Name="TBAnswer"/>
+            <StackPanel Orientation="Horizontal"
+                        Margin="0 15"
+                        Opacity="0.5">
+                <TextBlock FontSize="15" 
+                         Text="BMR: "
+                         VerticalAlignment="Center"/>
+                <TextBlock x:Name="TBBMR"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Opacity="0.5">
+                <TextBlock FontSize="15" 
+                         Text="TDEE: "
+                         VerticalAlignment="Center"/>
+                <TextBlock x:Name="TBTDEE"
+                           VerticalAlignment="Center"/>
             </StackPanel>
         </StackPanel>
     </Grid>
