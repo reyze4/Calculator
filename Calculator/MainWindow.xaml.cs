@@ -26,28 +26,38 @@ namespace Calculator
             InitializeComponent();
         }
 
+        bool isMax = true;
+
         private void BClear_Click(object sender, RoutedEventArgs e)
         {
             TBAge.Text = TBHeight.Text = TBKg.Text = TBTDEE.Text = TBBMR.Text = string.Empty;
+            TBKg.MaxLength = 3;
         }
 
         private void BCalculate_Click(object sender, RoutedEventArgs e)
         {
             double result, ratio;
+            TBBMR.Text = TBTDEE.Text = string.Empty;
 
             string error = "";
 
-            if (string.IsNullOrWhiteSpace(TBAge.Text) == true || TBAge.Text.EndsWith(",") == true)
+            if (string.IsNullOrWhiteSpace(TBAge.Text) == true || TBAge.Text.EndsWith(",") == true
+                || !(Convert.ToDouble(TBAge.Text) <= 80  && Convert.ToDouble(TBAge.Text) >= 15))
             {
-                error += "-Введите корректный возраст\n";
+                error += "-Введите корректный возраст\n(15 - 80 лет)\n";
+                TBAge.Text = string.Empty;
             }
-            if (string.IsNullOrWhiteSpace(TBKg.Text) == true ||TBKg.Text.EndsWith(",") == true)
+            if (string.IsNullOrWhiteSpace(TBKg.Text) == true ||TBKg.Text.EndsWith(",") == true
+                || !(Convert.ToDouble(TBKg.Text) >= 40 && Convert.ToDouble(TBKg.Text) <= 500))
             {
-                error += "-Введите корректный вес\n";
+                error += "-Введите корректный вес\n(40 - 500 кг)\n";
+                TBKg.Text = string.Empty;
             }
-            if (string.IsNullOrWhiteSpace(TBHeight.Text) == true || TBHeight.Text.EndsWith(",") == true)
+            if (string.IsNullOrWhiteSpace(TBHeight.Text) == true || TBHeight.Text.EndsWith(",") == true
+                || !(Convert.ToDouble(TBHeight.Text) <= 220 && Convert.ToDouble(TBHeight.Text) >= 120))
             {
-                error += "-Введите корректный рост\n";
+                error += "-Введите корректный рост\n(120 - 220 см)\n";
+                TBHeight.Text = string.Empty;
             }
             if (string.IsNullOrWhiteSpace(error) == false)
             {
@@ -57,13 +67,13 @@ namespace Calculator
 
 
 
-            if (Gender.Text=="0")
+            if (Gender.SelectedIndex == 0)
             {
-                result= 66 + (13.7 * Convert.ToDouble(TBKg.Text)) + (5 * Convert.ToDouble(TBHeight.Text)) - (6.8 * Convert.ToInt32(TBAge.Text));
+                result= 66 + (13.7 * Convert.ToDouble(TBKg.Text.Replace(" ", ""))) + (5 * Convert.ToDouble(TBHeight.Text.Replace(" ", "")) - (6.8 * Convert.ToInt32(TBAge.Text.Replace(" ", ""))));
             }
             else 
             {
-                result= 655 + (9.6 * Convert.ToDouble(TBKg.Text)) + (1.8 * Convert.ToDouble(TBHeight.Text)) - (4.7 * Convert.ToInt32(TBAge.Text));
+                result= 655 + (9.6 * Convert.ToDouble(TBKg.Text.Replace(" ", ""))) + (1.8 * Convert.ToDouble(TBHeight.Text.Replace(" ", ""))) - (4.7 * Convert.ToInt32(TBAge.Text.Replace(" ", "")));
             }
             ratio = GetRatio() * result;
             TBBMR.Text = result.ToString();
@@ -82,6 +92,8 @@ namespace Calculator
         private void TBKg_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             var textBox = sender as TextBox;
+            int max = 5;
+
 
             if (Regex.IsMatch(e.Text, @"[0-9,]") == false)
                 e.Handled = true;
@@ -91,6 +103,12 @@ namespace Calculator
 
             if (e.Text == "," && textBox.Text.Contains(','))
                 e.Handled = true;
+
+            if (e.Text == "," && isMax == true)
+            {
+                textBox.MaxLength += 3;
+                isMax = false;
+            }
         }
 
         private double GetRatio()
